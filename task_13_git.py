@@ -6,7 +6,7 @@ class CaesarsCipher:
     """
     Класс описывает шифр Цезаря
     """
-    def decrypt(self,text_to_decrypt: str) -> str:
+    def decrypt(self, text_to_decrypt: str) -> list[str]:
         """Расшифровка сообщения.
 
         Args:
@@ -28,9 +28,9 @@ class CaesarsCipher:
                 else:
                     text_decrypted += symbol
             decrypted_result.append(f'{key}: {text_decrypted}')
-        return '\n'.join(decrypted_result)
+        return decrypted_result
 
-    def encrypt(self, text_to_enrypt: str) -> str:
+    def encrypt(self, text_to_enrypt: str) -> list[str]:
         """Шифровка сообщения.
 
         Args:
@@ -52,10 +52,25 @@ class CaesarsCipher:
                 else:
                     text_encrypted += symbol
             encrypted_result.append(f'{key}: {text_encrypted}')
-        return '\n'.join(encrypted_result)
+        return encrypted_result
+
+    def write_data_in_file(self, file_path: str, data_to_file: list[str]):
+        """Запись результатов работы программы в файл.
+
+        Args:
+            file_path: Путь к файлу для записи результатов.
+            data_to_file: Данные, которые необходимо записать в файл.
+        """
+        with open(file_path, 'w', newline='') as file:
+            file.write('Ключ: сообщение\n')
+            file.writelines([string + '\n' for string in data_to_file])
 
 
 if __name__ == '__main__':
     text_decrypt: CaesarsCipher = CaesarsCipher()
     user_text_decrypt: str = input('Введите фразу для дешифрования: ')
-    print(text_decrypt.decrypt(user_text_decrypt))
+    user_file_path: str = input(
+        'Укажите путь к файлу для записи результатов: ')
+
+    decrypted_user_text: list[str] = text_decrypt.decrypt(user_text_decrypt)
+    text_decrypt.write_data_in_file(user_file_path, decrypted_user_text)
